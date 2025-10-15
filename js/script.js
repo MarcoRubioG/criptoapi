@@ -64,7 +64,61 @@ const getTop10Exchanges = (data) => {
       price_usd: parseFloat(ex.price_usd || 0)
     }));
 };
+//Buscar monedas  por tabla
+const setupSearch = (inputId, data, renderFunction, searchFields) => {
+  const input = el(inputId);
+  if (!input) return;
+  
+  input.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    
+    if (searchTerm === '') {
+      renderFunction(data);
+      return;
+    }
+    
+    const filtered = data.filter(item => {
+      return searchFields.some(field => {
+        const value = item[field];
+        return value && value.toString().toLowerCase().includes(searchTerm);
+      });
+    });
+    
+    renderFunction(filtered);
+  });
+};
 
+//Renderizar tablas 
+const renderCoinsTable = (data) => {
+  const tbody = el("tableCoins");
+  if (!tbody) return;
+  
+  tbody.innerHTML = data.map(coin => `
+    <tr>
+      <td><strong>${coin.name}</strong></td>
+      <td><span class="badge badge-soft">${coin.symbol}</span></td>
+      <td><strong>${fmtUSD(parseFloat(coin.price_usd))}</strong></td>
+      <td class="${parseFloat(coin.percent_change_24h) >= 0 ? 'text-success' : 'text-danger'}">
+        ${parseFloat(coin.percent_change_24h).toFixed(2)}%
+      </td>
+    </tr>
+  `).join('');
+};
+
+//Renderizar tabla de exchanges usando map
+const renderExchangesTable = (data) => {
+  const tbody = el("tableExchanges");
+  if (!tbody) return;
+  
+  tbody.innerHTML = data.map(ex => `
+    <tr>
+      <td><strong>${ex.name}</strong></td>
+      <td><span class="badge badge-soft">${ex.base}/${ex.quote}</span></td>
+      <td><strong>${fmtUSD(parseFloat(ex.price_usd))}</strong></td>
+      <td class="text-info">${fmtUSD(parseFloat(ex.volume_usd))}</td>
+    </tr>
+  `).join('');
+};
 //En vez de usar Fetch utilice axios
 let refresh = async () => {
   try {
@@ -98,6 +152,16 @@ let refresh = async () => {
     renderExchangesChart(top10Exchanges);
     console.log("Top 10 exchanges:", top10Exchanges);
 
+    //6 Renderizar Tablas
+    renderCoinsTable(coinsData);
+    renderExchangesTable(exchangesData);
+    console.log("Tablas renderizadas");
+
+    //7 Configurar Buscadores
+    setupSearch("searchCoins", coinsData, renderCoinsTable, ['name', 'symbol']);
+    setupSearch("searchExchanges", exchangesData, renderExchangesTable, ['name', 'base', 'quote']);
+    console.log("Buscadores configurados");
+    
   } catch (error) {
     console.error("Error:", error);
   }
