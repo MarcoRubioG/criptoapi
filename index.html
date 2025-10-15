@@ -24,6 +24,27 @@
     </nav>
 
     <main class="container my-4">
+        <!-- KPIs -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="card p-3">
+                <div class="kpi-label">Total Casas de Cambio</div>
+                <div class="kpi text-info" id="totalExchanges">—</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card p-3">
+                <div class="kpi-label">Precio Medio</div>
+                <div class="kpi text-success" id="avgPrice">—</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card p-3">
+                <div class="kpi-label">Moneda Más Cara</div>
+                <div class="kpi text-warning" id="mostExpensive">—</div>
+            </div>
+        </div>
+    </div>
         <!-- Charts -->
         <div class="row g-3 mt-1">
             <div class="col-12 col-lg-6">
@@ -56,6 +77,48 @@
             </div>
           
         </div>
+        <!-- Tablas -->
+    <div class="row g-3 mt-4">
+        <div class="col-12">
+            <div class="card p-3">
+                <h6 class="mb-3">Tabla de Monedas</h6>
+                <input type="text" id="searchCoins" class="form-control search-input mb-3" placeholder="Buscar moneda...">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Símbolo</th>
+                                <th>Precio USD</th>
+                                <th>Cambio 24h</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableCoins"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12">
+            <div class="card p-3">
+                <h6 class="mb-3">Tabla de Casas de Cambio</h6>
+                <input type="text" id="searchExchanges" class="form-control search-input mb-3" placeholder="Buscar casa de cambio...">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Casa de Cambio</th>
+                                <th>Par</th>
+                                <th>Precio USD</th>
+                                <th>Volumen USD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableExchanges"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
